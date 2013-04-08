@@ -120,11 +120,11 @@ struct reading SPIReadCont() //TODO! z.Z. nur ein Channle: ch0
 		if ( i > 2)
 		{
 			result.value[1] ^= (spiData[i] << ((5 - i) * 8));
-			printf("%02X\n", spiData[i]);
+//			printf("%02X\n", spiData[i]);
 		}
 		else {
-			result.value[2] ^= (spiData[i] << ((2 - i) * 8));
-			printf("%02X\n", spiData[i]);
+			result.value[0] ^= (spiData[i] << ((2 - i) * 8));
+//			printf("%02X\n", spiData[i]);
 		}
 	}
 	return result;
