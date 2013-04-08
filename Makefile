@@ -1,9 +1,9 @@
 CC = gcc
 
-CFLAGS =-Wall -I./include
+CFLAGS = -Wall -I./include
 CFLAGS += $(FLAG)
 
-LIBS=-lrt -lbcm2835
+LIBS= -lrt -lbcm2835
 
 OBJECTS = rw.o spi_mcp_rasp.o
 

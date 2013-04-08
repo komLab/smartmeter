@@ -28,8 +28,9 @@ int SPIinitialize(void)
 	bcm2835_spi_begin();
 	bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);      // The default
 	bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);                   // The default
-	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_8);    // The default 65536
+	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_65536);    // The default 65536
 	bcm2835_spi_chipSelect(BCM2835_SPI_CS_NONE);
+
 	return 0;
 }
 
@@ -38,7 +39,7 @@ void SPIWrite(char addr, char value)
 {
 	char spiData[2];
 	// ensure to use only valid addresses
-  	addr = addr << 1;
+	addr = addr << 1;
 	addr &= 0x3E;
 	
 	spiData[0] = addr;
@@ -78,7 +79,7 @@ uint32_t SPIRead(char addr, char len)
 	// addr is now our command(8bit)
 	addr = addr << 1;
 	addr ^= 0x01;
-	addr &= 0x3F; 
+	addr &= 0x3F;
 
 	spiData[0] = addr;
 	for(i = 1; i < len; i++)
@@ -106,27 +107,31 @@ void SPIReadContInit(void)
 
 struct reading SPIReadCont() //TODO! z.Z. nur ein Channle: ch0
 {
-	int i,j;
+	int i;
 	struct reading result;
 	char spiData[6] = {0, 0, 0, 0, 0, 0};	
 
-
-	result.value[0] = 0;	
+	result.value[0] = 0;
 	result.value[1] = 0;
 	
 	bcm2835_spi_transfern(spiData, sizeof(spiData));
-	j = 0;
 	for(i = 0; i < 6; i++)
 	{
-		if ( i >= 3)
-			j = 1;
-		result.value[j] ^= (spiData[i] << ((2 - i) * 8));
+		if ( i > 2)
+		{
+			result.value[1] ^= (spiData[i] << ((5 - i) * 8));
+			printf("%02X\n", spiData[i]);
+		}
+		else {
+			result.value[2] ^= (spiData[i] << ((2 - i) * 8));
+			printf("%02X\n", spiData[i]);
+		}
 	}
 	return result;
 }
 
 void setMCP3901Config(void)
-{	
+{
 	// define configuration sequence
 	char config_seq[5] = {CFG_PHASE, CFG_GAIN, CFG_STATUS, CFG_CONFIG1_SLOW, CFG_CONFIG2};
 	SPIWrite(ADDR_CONFIG2, CMD_RESET_ADCS);

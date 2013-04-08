@@ -12,6 +12,7 @@
 
 // Register configurations
 #define	CFG_PHASE		0x00
+// Boost for both channel active
 #define CFG_GAIN		0x18
 #define CFG_STATUS		0xB0
 #define CFG_STATUS_DEBUG	0xB4

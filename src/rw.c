@@ -1,4 +1,4 @@
-//#include <stdio.h>
+#include <stdio.h>
 #include "spi_mcp_rasp.h"
 #include "mcp3901.h"
 #include <bcm2835.h>
@@ -10,32 +10,26 @@ int main(int argc, char* argv[])
 	uint8_t firstDR, DR;
 	struct reading readingBuf;
 #endif
-	// spi mode 0 is set in wiringPiSPI.c
-	// todo: change the setup function to pass over the spi mode
 	if (SPIinitialize())
 	{
 		printf("ERROR: SPI device is not initialized\n");
 		return -1;
 	}
-#ifdef CONFIG	
+#ifdef CONFIG
 	setMCP3901Config();	
-	//printMCP3901Config();
+	printMCP3901Config();
 #endif
 #ifdef READCONFIG
 	printMCP3901Config();
 #endif
 #ifdef BURST
-	//init BURST mode
 	SPIReadContInit();
 	firstDR = 1;
 	DR = 0;
 
-	
-	//BURST (cont. read)
-
 	i = 1000;
 	while(i > 0)
-	{	
+	{
 		//printf("i = %d\n", i);
 		DR = bcm2835_gpio_lev(PIN_INTERRUPT);
 		//printf("DR = %d\n", DR);
@@ -60,9 +54,8 @@ int main(int argc, char* argv[])
 			firstDR = 1;
 		}		
 	}
-	//END spi cmd
 	bcm2835_gpio_write(PIN_CS, HIGH);
 #endif
-	
+	bcm2835_spi_end();
 	return 0;
 }
