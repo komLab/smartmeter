@@ -28,7 +28,7 @@ int SPIinitialize(void)
 	bcm2835_spi_begin();
 	bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);      // The default
 	bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);                   // The default
-	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_2048);    // The default 65536
+	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_64);    // The default 65536
 	bcm2835_spi_chipSelect(BCM2835_SPI_CS_NONE);
 
 	return 0;
@@ -133,7 +133,7 @@ struct reading SPIReadCont() //TODO! z.Z. nur ein Channle: ch0
 void setMCP3901Config(void)
 {
 	// define configuration sequence
-	char config_seq[5] = {CFG_PHASE, CFG_GAIN, CFG_STATUS, CFG_CONFIG1_SLOW, CFG_CONFIG2};
+	char config_seq[5] = {CFG_PHASE, CFG_GAIN, CFG_STATUS, CFG_CONFIG1, CFG_CONFIG2};
 	SPIWrite(ADDR_CONFIG2, CMD_RESET_ADCS);
 	SPIWriteArray(ADDR_PHASE, config_seq, 5);
 }
