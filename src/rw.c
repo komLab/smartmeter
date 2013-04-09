@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	}
 #ifdef CONFIG
 	setMCP3901Config();	
-	printMCP3901Config();
+//	printMCP3901Config();
 #endif
 #ifdef READCONFIG
 	printMCP3901Config();
