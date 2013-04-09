@@ -7,7 +7,6 @@ int main(int argc, char* argv[])
 {
 #ifdef BURST
 	int i,j;
-	uint8_t firstDR, DR;
 	struct reading readingBuf;
 #endif
 	if (SPIinitialize())
@@ -24,19 +23,14 @@ int main(int argc, char* argv[])
 #endif
 #ifdef BURST
 	SPIReadContInit();
-	firstDR = 1;
-	DR = 0;
+	bcm2835_gpio_afen(PIN_INTERRUPT);
 
 	i = 1000;
 	while(i > 0)
 	{
-		//printf("i = %d\n", i);
-		DR = bcm2835_gpio_lev(PIN_INTERRUPT);
-		//printf("DR = %d\n", DR);
-		//printf("fristDR = %d\n", firstDR);
-		if((DR == 0) && firstDR)
+		if(bcm2835_gpio_eds(PIN_INTERRUPT))
 		{
-			firstDR = 0;
+			bcm2835_gpio_set_eds(PIN_INTERRUPT);
 			readingBuf = SPIReadCont();
 			for (j = 0; j < 2 ; j++)
 			{
@@ -48,11 +42,6 @@ int main(int argc, char* argv[])
 			printf("%d,%d\n", (int32_t)readingBuf.value[0],(int32_t)readingBuf.value[1]);
 			i--;
 		}
-		//printf("fristDR = %d\n", firstDR);
-		if(DR && (firstDR == 0))
-		{
-			firstDR = 1;
-		}		
 	}
 	bcm2835_gpio_write(PIN_CS, HIGH);
 #endif
