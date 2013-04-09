@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 	i = 1000;
 	while(i > 0)
 	{
-		bcm2835_delayMicroseconds(15);
+		//bcm2835_delayMicroseconds(15);
 		readingBuf = SPIReadCont();
 		for (j = 0; j < 2 ; j++)
 		{
