@@ -6,8 +6,8 @@
 int main(int argc, char* argv[])
 {
 #ifdef BURST
-	int i,j;
-	struct reading readingBuf;
+	int i;
+	uint32_t readingBuf;
 #endif
 	if (SPIinitialize())
 	{
@@ -22,7 +22,6 @@ int main(int argc, char* argv[])
 	printMCP3901Config();
 #endif
 #ifdef BURST
-	SPIReadContInit();
 	bcm2835_gpio_afen(PIN_INTERRUPT);
 
 	i = 1000;
@@ -32,18 +31,14 @@ int main(int argc, char* argv[])
 		{
 			bcm2835_gpio_set_eds(PIN_INTERRUPT);
 			readingBuf = SPIReadCont();
-			for (j = 0; j < 2 ; j++)
+			if((readingBuf & (uint32_t)1 << 23) != 0)
 			{
-				if((readingBuf.value[j] & (uint32_t)1 << 23) != 0)
-				{
-					readingBuf.value[j] ^= 0xFF000000;
-				}
-			}			
-			printf("%d,%d\n", (int32_t)readingBuf.value[0],(int32_t)readingBuf.value[1]);
+				readingBuf ^= 0xFF000000;
+			}
+			printf("%d\n", (int32_t)readingBuf);
 			i--;
 		}
 	}
-	bcm2835_gpio_write(PIN_CS, HIGH);
 #endif
 	bcm2835_spi_end();
 	return 0;

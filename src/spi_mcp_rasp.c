@@ -105,35 +105,28 @@ void SPIReadContInit(void)
 	bcm2835_spi_transfern(spiData, sizeof(spiData));
 }
 
-struct reading SPIReadCont() //TODO! z.Z. nur ein Channle: ch0
+uint32_t SPIReadCont() //TODO! z.Z. nur ein Channle: ch0
 {
 	int i;
-	struct reading result;
-	char spiData[6] = {0, 0, 0, 0, 0, 0};	
+	uint32_t result;
+	char spiData[4] = {7, 0, 0, 0};	
 
-	result.value[0] = 0;
-	result.value[1] = 0;
+	result = 0;
 	
+	bcm2835_gpio_write(PIN_CS, LOW);
 	bcm2835_spi_transfern(spiData, sizeof(spiData));
-	for(i = 0; i < 6; i++)
+	for(i = 1; i < 4; i++)
 	{
-		if ( i > 2)
-		{
-			result.value[1] ^= (spiData[i] << ((5 - i) * 8));
-//			printf("%02X\n", spiData[i]);
-		}
-		else {
-			result.value[0] ^= (spiData[i] << ((2 - i) * 8));
-//			printf("%02X\n", spiData[i]);
-		}
+		result ^= (spiData[i] << ((3 - i) * 8));
 	}
+	bcm2835_gpio_write(PIN_CS, HIGH);
 	return result;
 }
 
 void setMCP3901Config(void)
 {
 	// define configuration sequence
-	char config_seq[5] = {CFG_PHASE, CFG_GAIN, CFG_STATUS, CFG_CONFIG1_SLOW, CFG_CONFIG2};
+	char config_seq[5] = {CFG_PHASE, ACFG_GAIN, ACFG_STATUS, ACFG_CONFIG1, ACFG_CONFIG2};
 	SPIWrite(ADDR_CONFIG2, CMD_RESET_ADCS);
 	SPIWriteArray(ADDR_PHASE, config_seq, 5);
 }

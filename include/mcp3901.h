@@ -19,6 +19,10 @@
 #define CFG_CONFIG1		0x0C
 #define CFG_CONFIG1_SLOW	0xFC
 #define CFG_CONFIG2		0X0C
-
+// for read async
+#define ACFG_GAIN		0x18
+#define ACFG_STATUS		0x74
+#define ACFG_CONFIG1		0x0C
+#define ACFG_CONFIG2		0X0C
 // ADC reset command
 #define CMD_RESET_ADCS		0xCC

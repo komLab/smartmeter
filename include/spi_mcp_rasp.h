@@ -23,6 +23,6 @@ void setMCP3901Config(void);
 
 void SPIReadContInit(void);
 
-struct reading SPIReadCont(void);
+uint32_t SPIReadCont(void);
 
 void printMCP3901Config(void);
