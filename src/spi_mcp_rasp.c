@@ -28,7 +28,7 @@ int SPIinitialize(void)
 	bcm2835_spi_begin();
 	bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);      // The default
 	bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);                   // The default
-	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_2048);    // The default 65536
+	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_512);    // The default 65536
 	bcm2835_spi_chipSelect(BCM2835_SPI_CS_NONE);
 
 	return 0;
@@ -99,6 +99,8 @@ uint32_t SPIRead(char addr, char len)
 
 void SPIReadContInit(void)
 {
+	// first byte is control byte for reading register 0x00
+	// then read next 6 bytes and discard
 	char spiData[7]= {1, 0, 0, 0, 0, 0, 0};
 
 	bcm2835_gpio_write(PIN_CS, LOW);
