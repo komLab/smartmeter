@@ -133,7 +133,7 @@ struct reading SPIReadCont() //TODO! z.Z. nur ein Channle: ch0
 void setMCP3901Config(void)
 {
 	// define configuration sequence
-	char config_seq[5] = {CFG_PHASE, CFG_GAIN, CFG_STATUS, CFG_CONFIG1, CFG_CONFIG2};
+	char config_seq[5] = {CFG_PHASE, CFG_GAIN, CFG_STATUS, CFG_CONFIG1_SLOW, CFG_CONFIG2};
 	SPIWrite(ADDR_CONFIG2, CMD_RESET_ADCS);
 	SPIWriteArray(ADDR_PHASE, config_seq, 5);
 }

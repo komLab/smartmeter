@@ -22,9 +22,10 @@ int main(int argc, char* argv[])
 	printMCP3901Config();
 #endif
 #ifdef BURST
-	SPIReadContInit();
-
 	i = 1000;
+	SPIReadContInit();
+	while(bcm2835_gpio_lev(PIN_INTERRUPT))
+		;
 	while(i > 0)
 	{
 		//bcm2835_delayMicroseconds(15);
@@ -38,6 +39,7 @@ int main(int argc, char* argv[])
 		}			
 		printf("%d,%d\n", (int32_t)readingBuf.value[0],(int32_t)readingBuf.value[1]);
 		i--;
+		bcm2835_delayMicroseconds(900);
 	}
 	bcm2835_gpio_write(PIN_CS, HIGH);
 #endif
