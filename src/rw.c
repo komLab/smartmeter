@@ -27,7 +27,6 @@ int main(int argc, char* argv[])
 		while((GPIO_GET & 0x040000)>0)
 			;
 
-		//bcm2835_delayMicroseconds(15);
 		readingBuf = SPIReadCont();
 		for (j = 0; j < 2 ; j++)
 		{
