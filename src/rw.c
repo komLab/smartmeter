@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include "spi_mcp_rasp.h"
 #include "mcp3901.h"
+#include "iomapped_gpio.h"
 #include <bcm2835.h>
 
 int main(int argc, char* argv[])
 {
 #ifdef BURST
-	int i,j;
+	int j;
 	struct reading readingBuf;
 #endif
 	if (SPIinitialize())
@@ -16,18 +17,16 @@ int main(int argc, char* argv[])
 	}
 #ifdef CONFIG
 	setMCP3901Config();	
-//	printMCP3901Config();
-#endif
-#ifdef READCONFIG
-	printMCP3901Config();
 #endif
 #ifdef BURST
-	i = 1000;
 	SPIReadContInit();
-	while(bcm2835_gpio_lev(PIN_INTERRUPT))
-		;
-	while(i > 0)
+	while(1)
 	{
+		// change 0x80 to MASK for current interrupt pin
+		// e.g. 0x80 for gpio pin 7
+		while((GPIO_GET & 0x04000)==0)
+			;
+
 		//bcm2835_delayMicroseconds(15);
 		readingBuf = SPIReadCont();
 		for (j = 0; j < 2 ; j++)
@@ -38,8 +37,6 @@ int main(int argc, char* argv[])
 			}
 		}			
 		printf("%d,%d\n", (int32_t)readingBuf.value[0],(int32_t)readingBuf.value[1]);
-		i--;
-		bcm2835_delayMicroseconds(900);
 	}
 	bcm2835_gpio_write(PIN_CS, HIGH);
 #endif

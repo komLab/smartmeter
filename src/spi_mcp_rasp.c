@@ -16,9 +16,6 @@ int SPIinitialize(void)
 	bcm2835_gpio_fsel(PIN_RESET, BCM2835_GPIO_FSEL_OUTP);
 	bcm2835_gpio_fsel(PIN_CS, BCM2835_GPIO_FSEL_OUTP);
 
-	// Set the pin to be an input
-	bcm2835_gpio_fsel(PIN_INTERRUPT, BCM2835_GPIO_FSEL_INPT);
-
 	// set ~RESET Pin always high
 	bcm2835_gpio_write(PIN_RESET, HIGH);
 
@@ -30,6 +27,9 @@ int SPIinitialize(void)
 	bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);                   // The default
 	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_64);    // The default 65536
 	bcm2835_spi_chipSelect(BCM2835_SPI_CS_NONE);
+
+	// setup iomapped interrupt pin
+	setup_io();
 
 	return 0;
 }
