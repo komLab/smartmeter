@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	{
 		// change 0x80 to MASK for current interrupt pin
 		// e.g. 0x80 for gpio pin 7
-		while((GPIO_GET & 0x04000)==0)
+		while((GPIO_GET & 0x040000)>0)
 			;
 
 		//bcm2835_delayMicroseconds(15);

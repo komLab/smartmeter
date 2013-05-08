@@ -5,7 +5,7 @@ CFLAGS += $(FLAG)
 
 LIBS= -lrt -lbcm2835
 
-OBJECTS = rw.o spi_mcp_rasp.o
+OBJECTS = rw.o spi_mcp_rasp.o iomapped_gpio.o
 
 rw: $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LIBS)
