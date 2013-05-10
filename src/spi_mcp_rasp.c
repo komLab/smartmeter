@@ -1,7 +1,7 @@
+#include <bcm2835.h>
 #include "spi_mcp_rasp.h"
 #include "mcp3901.h"
 #include "iomapped_gpio.h"
-#include <bcm2835.h>
 
 int SPIinitialize(void)
 {
@@ -106,10 +106,10 @@ void SPIReadContInit(void)
 	bcm2835_spi_transfern(spiData, sizeof(spiData));
 }
 
-struct reading SPIReadCont() //TODO! z.Z. nur ein Channle: ch0
+reading SPIReadCont() //TODO! z.Z. nur ein Channle: ch0
 {
 	int i;
-	struct reading result;
+	reading result;
 	char spiData[6] = {0, 0, 0, 0, 0, 0};	
 
 	result.value[0] = 0;
