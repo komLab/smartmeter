@@ -12,7 +12,7 @@ int alloc_buffer(cbuffer *buffer, int size)
 	buffer->head = 0;
 	buffer->tail = 0;
 
-	printf("allocate virtual memory. CHECK!\n");
+	//printf("allocate virtual memory. CHECK!\n");
 	return 0;
 }
 
@@ -24,7 +24,7 @@ int free_buffer(cbuffer *buffer)
 	}
 
 	free(buffer->addr);
-	printf("free virtual memory. CHECK!\n");
+	//printf("free virtual memory. CHECK!\n");
 
 	return 0;
 }
