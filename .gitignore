@@ -2,3 +2,4 @@ bin/
 *.o
 rw
 log*
+octave-core
