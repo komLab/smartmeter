@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[])
 {
-	float norm = 500.0f/(2^23);
+	//float norm = 500.0f/(2^23);
 
 #ifdef BURST
 	int j;
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 				readingBuf.value[j] ^= 0xFF000000;
 			}
 		}			
-		printf("%f,%f\n", (float)readingBuf.value[0]*norm,(float)readingBuf.value[1]*norm);
+		printf("%d,%d\n", (int32_t)readingBuf.value[0],(int32_t)readingBuf.value[1]);
 	}
 	bcm2835_gpio_write(PIN_CS, HIGH);
 #endif

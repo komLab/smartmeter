@@ -19,6 +19,7 @@
 #define CFG_CONFIG1		0x0C
 #define CFG_CONFIG1_SLOW	0xFC
 #define CFG_CONFIG2		0X0C
+#define CFG_CONFIG2_VREFEX	0x0E
 
 // ADC reset command
 #define CMD_RESET_ADCS		0xCC
